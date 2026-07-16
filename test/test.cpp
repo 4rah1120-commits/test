@@ -230,7 +230,7 @@ struct {
 		char (*abc_p)[2]  //구조체 자체는 메모리에 잡힌 거 아님
 }
 
-char array_2[2][2] = { {1,2},{3,4} };
+char array_22[2][2] = { {1,2},{3,4} };
 // 구조체 자체가 타입이므로, typedef로 바로 사용 가능
 typedef struct {
 	char aa;
@@ -241,9 +241,15 @@ typedef struct {
 struct_var_t struct_var; //이렇게하면 이제부터 메모리로 잡힘
 struct_var.aa = 1;
 struct_var.nn = 2;
-struct_var.abc_pp = array_2;  //여기서 abc_p 는 { {1,2},{3,4} }를 가리킴
+struct_var.abc_pp = array_22;  //여기서 abc_p 는 { {1,2},{3,4} }를 가리킴
 printf("%d, \n", struct_var.abc_pp[1][0]); //이름이 달라진거지, 포인터를 가져온 거여서 
-struct_var.abc_pp = &array_2[1];
+//---------------------------------------
+
+// struct_var.abc_pp : 2중 포인터, (array_22[0] / array_22[1]) : 1중 포인터
+// 그래서 2개 변수를 동격으로 보면 안 된다.
+// 굳이 대입을 한다면 array_22[1] 변수 1중 포인터에 &를 붙여서 상위 주소를 가리켜야 한다.
+
+struct_var.abc_pp = &array_22[1];
 
 return 0;
 
